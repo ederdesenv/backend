@@ -586,18 +586,12 @@ app.listen(port, () => {
 
 
 | Endpoint | Método | Descrição |
-
 |---|---|---|
-
 | `/` | `GET` | Retorna o status da API |
-
 | `/aeronaves` | `GET` | Retorna a lista de todas as aeronaves cadastradas |
-
 | `/aeronaves/:id` | `GET` | Retorna uma aeronave específica (404 se não encontrada) |
 
-
-
-\---
+---
 
 
 
@@ -637,15 +631,13 @@ Servidor rodando em http://localhost:3000
 
 
 
-| Nome da requisição | Método | URL |
-
+| Endpoint | Método | Descrição |
 |---|---|---|
+| `/` | `GET` | Retorna o status da API |
+| `/aeronaves` | `GET` | Retorna a lista de todas as aeronaves cadastradas |
+| `/aeronaves/:id` | `GET` | Retorna uma aeronave específica (404 se não encontrada) |
 
-| Status da API | `GET` | `http://localhost:3000/` |
-
-| Listar aeronaves | `GET` | `http://localhost:3000/aeronaves` |
-
-| Buscar aeronave por ID | `GET` | `http://localhost:3000/aeronaves/1` |
+---
 
 
 
