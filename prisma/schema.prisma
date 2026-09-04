@@ -1,0 +1,27 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Get a free hosted Postgres database in seconds: `npx create-db`
+
+generator client {
+  provider = "prisma-client"
+  output   = "../src/generated/prisma"
+}
+
+datasource db {
+  provider = "postgresql"
+}
+
+model Aeronave {
+  id                   Int      @id @default(autoincrement())
+  fabricante           String
+  modelo               String
+  numeroSerie          String   @unique @map("numero_serie")
+  pesoMaximoDecolagem  Decimal  @map("peso_maximo_decolagem") @db.Decimal(10, 2)
+  codigoSisant         String   @unique @map("codigo_sisant")
+  capacidadeTanque     Decimal  @map("capacidade_tanque") @db.Decimal(10, 2)
+  createdAt            DateTime @default(now()) @map("created_at")
+  updatedAt            DateTime @updatedAt @map("updated_at")
+
+  @@map("aeronaves")
+}
