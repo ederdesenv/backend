@@ -41,45 +41,19 @@ Resultado:
   "type": "commonjs"
 }
 ```
-
-
-
-\---
-
-
-
 ## 2. Instalar o framework Express
-
-
 
 Documentação oficial: \[Express.js](https://expressjs.com/)
 
-
-
 ```bash
-
 npm install express
-
 ```
-
-
-
-\---
-
-
 
 ## 3. Instalar TypeScript e ferramentas de desenvolvimento
 
-
-
 ```bash
-
 npm install -D typescript @types/node @types/express tsx
-
 ```
-
-
-
 Resultado:
 
 ```powershell
@@ -92,18 +66,11 @@ found 0 vulnerabilities
 
 ```
 
-
-
 \- `typescript` → compilador TypeScript
 
 \- `@types/node` / `@types/express` → tipagens para Node.js e Express
 
 \- `tsx` → executa arquivos `.ts` diretamente, sem necessidade de compilação manual
-
-
-
-\---
-
 
 
 ## 4. Configurar o `tsconfig.json`
@@ -115,8 +82,8 @@ found 0 vulnerabilities
   // Visit https://aka.ms/tsconfig to read more about this file
   "compilerOptions": {
     // Environment Settings
-    "module": "nodenext",
-    "target": "esnext",
+    "module": "comonjs",
+    "target": "es2020",
     "types": [],
 
     // Other Outputs
@@ -143,32 +110,20 @@ found 0 vulnerabilities
 }
 ```
 
-> \*\*Observação:\*\* a opção `forceConsistentCasingInFileNames` garante que a caixa (maiúsculas/minúsculas) dos nomes de arquivo nos imports seja respeitada — importante porque o Windows é \*case-insensitive\*, mas o Linux (ambiente comum de produção) é \*case-sensitive\*.
-
-
-
-\---
-
-
-
 ## 5. Configurar o Docker Compose (PostgreSQL)
-
-
 
 ```yaml
 services:
-  # Nosso serviço de banco de dados
   postgres:
-    image: postgres:15-alpine  # Versão leve e estável do PostgreSQL
+    image: postgres:15-alpine  
     container_name: aeronaves_db
     environment:
-      POSTGRES_USER: admin       # Usuário do banco
-      POSTGRES_PASSWORD: senha123 # Senha (em produção, use algo mais seguro!)
-      POSTGRES_DB: cadastro_aeronaves # Nome do nosso banco
+      POSTGRES_USER: admin      
+      POSTGRES_PASSWORD: senha123 
+      POSTGRES_DB: cadastro_aeronaves 
     ports:
-      - "5432:5432"  # Porta padrão do PostgreSQL
+      - "5432:5432" 
     volumes:
-      # Isso garante que os dados persistam mesmo se o container parar
       - postgres_data:/var/lib/postgresql/data
 
 volumes:
@@ -177,14 +132,12 @@ volumes:
 
 
 
-\### Subir o container
+### Subir o container
 
 
 
 ```bash
-
 docker-compose up -d
-
 ```
 
 
@@ -195,36 +148,17 @@ docker-compose up -d
 
 \- Sobe o container `aeronaves\_db` em background (modo \*detached\*)
 
-
-
 Para conferir se subiu corretamente:
 
 ```bash
-
 docker-compose ps
-
 ```
-
-
-
-\---
-
-
-
 ## 6. Instalar o Prisma ORM
 
-
-
 ```bash
-
 npm install prisma@7.10.0 --save-dev
-
 ```
-
-
-
 Resultado:
-
 ```powershell
 PS C:\eder_dados\POS\TCC\prototipo_web_desenv_LOCAL1\backend> npm install prisma@7.10.0 --save-dev
 added 134 packages, and audited 219 packages in 3m
@@ -236,31 +170,14 @@ To address all issues (including breaking changes), run:
 Run `npm audit` for details.
 ```
 
-
-
-\### Inicializar o Prisma no projeto
-
-
+### Inicializar o Prisma no projeto
 
 ```bash
-
 npx prisma init
-
 ```
-
-
-
 Isso cria a pasta `prisma/` (com `schema.prisma`), o arquivo de configuração `prisma7.config.ts` e o `.env`.
 
-
-
-\---
-
-
-
 ## 7. Definir a model `Aeronave` (`prisma/schema.prisma`)
-
-
 
 ```prisma
 generator client {
@@ -287,30 +204,16 @@ model Aeronave {
 }
 ```
 
-
 Campos `numeroSerie` e `codigoSisant` são marcados como `@unique`, já que representam identificadores reais e não repetíveis de cada aeronave (número de série de fabricação e código de registro no SISANT/ANAC).
 
-
-
-\---
-
-
-
 ## 8. Configurar a variável de ambiente (`.env`)
-
-
 
 ```dotenv
 
 DATABASE\_URL="postgresql://admin:senha123@localhost:5432/cadastro\_aeronaves?schema=public"
 
 ```
-
-\---
-
 ## 9. Configurar o `prisma7.config.ts`
-
-
 
 ```typescript
 import "dotenv/config";
@@ -328,26 +231,13 @@ export default defineConfig({
 });
 ```
 
-
-
-\---
-
-
-
 ## 10. Rodar a primeira migration
 
-
-
 ```bash
-
 npx prisma migrate dev --name init
-
 ```
 
-
-
 Resultado:
-
 ```powershell
 Loaded Prisma config from prisma7.config.ts.
 Prisma schema loaded from prisma\schema.prisma.
@@ -361,30 +251,15 @@ prisma\migrations/
 Your database is now in sync with your schema.
 ```
 
-
-
 Esse comando compara a `schema.prisma` com o banco, gera o SQL da migration, aplica no PostgreSQL e gera automaticamente o Prisma Client.
-
-
-
-\---
-
-
 
 ## 11. Popular o banco com dados iniciais (`prisma/seed.ts`)
 
-
-
 Como o Prisma 7 exige o uso de um \*\*driver adapter\*\*, instale as dependências necessárias:
 
-
-
 ```bash
-
 npm install @prisma/adapter-pg pg
-
 npm install -D @types/pg
-
 ```
 
 ```typescript
@@ -452,7 +327,7 @@ async function main() {
   await prisma.aeronave.createMany({
     data:
 
-\### Registrar o comando de seed no `package.json`
+### Registrar o comando de seed no `package.json`
 
 
 ```json
@@ -469,7 +344,7 @@ async function main() {
 
 
 
-\### Executar o seed
+### Executar o seed
 
 
 
@@ -496,14 +371,7 @@ The seed command has been executed.
 ```
 
 
-
-\---
-
-
-
 ## 12. Centralizar a instância do Prisma Client (`src/lib/prisma.ts`)
-
-
 
 ```typescript
 import { PrismaPg } from "@prisma/adapter-pg";
@@ -527,12 +395,6 @@ export const prisma = new PrismaClient({
 
 
 Centralizar a criação do `PrismaClient` evita múltiplas conexões desnecessárias com o banco e reduz repetição de código entre `seed.ts` e `server.ts`.
-
-
-
-\---
-
-
 
 ## 13. Implementar os endpoints da API (`src/server.ts`)
 
@@ -623,7 +485,7 @@ Servidor rodando em http://localhost:3000
 
 
 
-\---
+---
 
 
 
@@ -676,19 +538,12 @@ Servidor rodando em http://localhost:3000
 \*\*`GET /aeronaves/1`\*\* (existe)
 
 ```json
-
 {
-
-&#x20; "id": 1,
-
-&#x20; "fabricante": "DJI",
-
-&#x20; "modelo": "Agras T30"
-
+  "id": 1,
+  "fabricante": "DJI",
+  "modelo": "Agras T30"
 }
-
 ```
-
 
 
 \*\*`GET /aeronaves/999`\*\* (não existe) — status `404 Not Found`
@@ -698,10 +553,6 @@ Servidor rodando em http://localhost:3000
 { "error": "Aeronave não encontrada" }
 
 ```
-
-
-
-\---
 
 
 
@@ -770,14 +621,7 @@ backend/
 ```
 
 
-
-\---
-
-
-
 ## Considerações finais
-
-
 
 Este roteiro cobre a jornada completa de configuração do backend, desde a inicialização do projeto Node.js até a disponibilização de uma API REST funcional, conectada a um banco PostgreSQL via Prisma ORM, com dados de exemplo populados via seed. A escolha do domínio de \*\*cadastro de aeronaves não tripuladas\*\* demonstra, de forma prática, conceitos de modelagem de dados, persistência e exposição de serviços REST aplicados a um cenário real e relevante do setor de drones agrícolas — servindo de base para a discussão técnica apresentada neste TCC.
 
