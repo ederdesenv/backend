@@ -177,6 +177,21 @@ npx prisma init
 ```
 Isso cria a pasta `prisma/` (com `schema.prisma`), o arquivo de configuração `prisma7.config.ts` e o `.env`.
 
+> [!CAUTION]
+> OBS.: ao rodar o comando **npx prisma init** foi exibido este aviso:
+
+## Erro de Instalação de Skills
+
+✖ **Skills install failed**
+
+> **Aviso:** Failed to install Prisma agent skills. You can install them manually by running:
+
+```bash
+npx --yes skills@1.5.14 add prisma/skills --agent cursor claude-code codex windsurf --skill '*' -y
+```
+
+isso resultou na criação da pasta do agente de IA claude , trata-se de "manuais de instruções" que o Prisma disponibiliza para agentes de IA (Claude Code, Cursor, Windsurf, Codex) para o projeto.
+
 ## 7. Definir a model `Aeronave` (`prisma/schema.prisma`)
 
 ```prisma
